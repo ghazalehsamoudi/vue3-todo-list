@@ -1,0 +1,23 @@
+ul li{
+    list-style-type: none;
+    background-color: bisque;
+}
+.close-btn{
+    background-color: red;
+    padding: 4px 12px;
+    color: white;
+}
+.checked{
+    /* background: #888;
+    color: #fff; */
+   text-decoration: line-through;
+}
+.checked::before{
+    content: '';
+    border: 2px solid gray;
+    transform: rotate(45deg);
+    width: 7px;
+    border-top: unset;
+    border-left: unset;
+    height: 20px;
+}

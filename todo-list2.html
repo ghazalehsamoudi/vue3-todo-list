@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="todo-list2.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="header">
+            <h1 class="text-center mb-5">تودو لیست</h1>
+            <div class="d-flex flex-row row w-75 m-auto mb-3">
+                <input type="text" v-model="input" class="col-8 p-2">
+                <button class="col-4" @click="addTodo">افزودن</button>
+            </div>
+            <h2 class="text-center mt-4">
+                {{todos}}
+            </h2>
+        </div>
+        <ul class="p-0">
+           <todo-list 
+                v-for="(todo,index) in todos"
+                :key="todo.text"
+                @checked="todo.completed=!todo.completed"
+                :class="{ 'checked': todo.completed }"
+                @delete="deleteTodo(index)"
+                :todo="todo">
+
+           </todo-list>
+        </ul>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script src="http://unpkg.com/vue@next"></script>
+    <script>
+        const app = Vue.createApp({
+            data: () => ({
+                input: '',
+                todos: [{
+                        text: 'first todo',
+                        completed: false
+                    },
+                     {
+                        text: 'second todo',
+                        completed: false
+                    }
+                ]
+            }),
+            methods: {
+                addTodo() {
+                    this.todos.push({text:this.input,completed:false})
+                },
+                deleteTodo(index) {
+                    this.todos.splice(index, 1)
+                }
+            }
+        })
+        app.component('todo-list', {
+           template:` 
+           <li class="d-flex flex-row justify-content-between mb-1 pl-4 pr-2"
+                @click="$emit('checked')"
+                >
+                {{todo.text}}
+                <button class="border-0 close-btn" @click="$emit('delete')">X</button>
+            </li>
+           `,
+           props:['todo']
+        })
+        const vm = app.mount('#app')
+    </script>
+</body>
+
+</html>
